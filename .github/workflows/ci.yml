@@ -9,6 +9,9 @@ jobs:
     steps:
       - uses: actions/checkout@master
       
+      - name: Install dependencies
+        run: npm install
+      
       - name: Run Snyk to check for vulnerabilities
       #test
         uses: snyk/actions/node@master
