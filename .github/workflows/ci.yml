@@ -18,7 +18,7 @@ jobs:
       - name: Authenticate with Snyk
         run: snyk auth ${{ secrets.SNYK_TOKEN }}
       - name: Snyk Code Test
-        run: snyk code test --fail-on=all --severity-threshold=high
+        run: snyk code test
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
       - name: Snyk Monitor
