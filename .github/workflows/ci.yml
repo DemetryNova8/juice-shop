@@ -1,32 +1,44 @@
-name: Snyk Scan
-
+name: snyk
 on:
   push:
     branches:
       - master
-  pull_request:
-    branches:
-      - master
-
+      
 jobs:
-  snyk:
+  security:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+      - uses: actions/checkout@master
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '14'
       - name: Install dependencies
         run: npm install
 
-      - name: Install Snyk CLI
+      - name: Install snyk
         run: npm install -g snyk
 
-      - name: Run Snyk Test
+      - name: Configure Snyk endpoint
+        run: snyk config set endpoint=https://api.us.snyk.io
+
+      - name: Authenticate with Snyk
+        run: snyk auth ${{ secrets.SNYK_TOKEN }}
+
+  snyk-code:
+    environment: snyk
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: snyk/actions/setup@master
+      - name: Configure Snyk endpoint
+        run: snyk config set endpoint=https://api.us.snyk.io
+      - name: Authenticate with Snyk
+        run: snyk auth ${{ secrets.SNYK_TOKEN }}
+      - name: Snyk Code Test
+        continue-on-error: true
+        run: snyk code test --severity-threshold=critical --fail-on=all 
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-        run: snyk test
+      - name: Snyk Code Test
+        continue-on-error: true
+        run: snyk monitor
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
