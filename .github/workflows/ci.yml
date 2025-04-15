@@ -34,7 +34,7 @@ jobs:
         run: snyk auth ${{ secrets.SNYK_TOKEN }}
       - name: Snyk Code Test
         continue-on-error: true
-        run: snyk code test --severity-threshold=critical --fail-on=all
+        run: snyk code test --severity-threshold='critical' --fail-on=all
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
       - name: Snyk Code Test
