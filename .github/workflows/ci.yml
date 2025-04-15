@@ -11,6 +11,9 @@ jobs:
       
       - name: Install dependencies
         run: npm install
+        
+      - name: Authenticate Snyk
+        run: snyk auth ${{ secrets.SNYK_TOKEN }}
       
       - name: Run Snyk to check for vulnerabilities
       #test
@@ -18,7 +21,7 @@ jobs:
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
-          command: test
+          command: test --severity-threshold=critical --fail-on=all
           
       - name: Monitor project with Snyk
       #monitor
