@@ -17,7 +17,7 @@ jobs:
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
-          command: auth 6ab76852-9416-4f5a-b3ec-b9c6175b39b4 && test
+          command: "auth 6ab76852-9416-4f5a-b3ec-b9c6175b39b4"
       
       - name: Run Snyk to check for vulnerabilities
       #test
@@ -25,7 +25,7 @@ jobs:
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
-          command: test --severity-threshold=critical --fail-on=all
+          command: "test --severity-threshold=critical --fail-on=all"
           
       - name: Monitor project with Snyk
       #monitor
@@ -33,4 +33,4 @@ jobs:
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
-          command: monitor
+          command: "monitor"
